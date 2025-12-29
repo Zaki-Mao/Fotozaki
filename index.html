@@ -5,17 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VISUAL ARCHIVE | HOME</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
     <style>
-        /* 保持原有的 CSS 样式不变 */
         :root { --bg: #ffffff; --text: #000000; --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; --transition-a24: cubic-bezier(0.4, 0, 0.2, 1); --hasselblad-accent: #bd5d38; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg); color: var(--text); font-family: var(--font-main); -webkit-font-smoothing: antialiased; overflow-x: hidden; width: 100%; }
-        .page-container { animation: a24Entrance 1.8s var(--transition-a24) forwards; opacity: 0; }
-        @keyframes a24Entrance { 0% { transform: scale(1.08); opacity: 0; filter: blur(10px); } 100% { transform: scale(1); opacity: 1; filter: blur(0); } }
+
+        /* =========================================
+           Hero 开屏区域
+           ========================================= */
+        .hero-intro-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            z-index: 1;
+        }
+
+        .hero-bg-wrap {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+        }
+
+        .hero-bg-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 全新艺术素材：具有丰富灰阶和构成感的黑白抽象摄影 */
+            background-image: url('images/portrait/Hero.jfif'); 
+            background-position: center;
+            background-size: cover;
+            /* 移除初始滤镜，确保图片一开始清晰可见，不显死黑 */
+            /* filter: brightness(0.8); */ 
+            will-change: filter;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateY(-5vh);
+            /* 增加文字阴影，确保在较亮的背景区域也能看清 */
+            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
+        }
+
+        .hero-main-title {
+            font-size: 13vw;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            line-height: 1;
+            margin: 0;
+            white-space: nowrap;
+            will-change: transform;
+        }
+
+        .hero-slogan-container {
+            margin-top: 40px;
+            padding: 0 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            max-width: 900px;
+        }
+
+        .slogan-line {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 24px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+            text-align: center;
+        }
+
+        /* =========================================
+           导航栏 (初始隐藏)
+           ========================================= */
+        header { 
+            position: fixed; top: 0; width: 100%; height: 70px; padding: 0 40px; 
+            display: flex; align-items: center; justify-content: space-between; 
+            background: rgba(255,255,255,0.95); 
+            backdrop-filter: blur(10px); 
+            z-index: 1000; 
+            border-bottom: 0.5px solid #f0f0f0; 
+            transition: all 0.3s ease;
+            opacity: 0; 
+            pointer-events: none;
+            transform: translateY(-20px);
+        }
         
-        /* 导航栏 */
-        header { position: fixed; top: 0; width: 100%; height: 70px; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 0.5px solid #f0f0f0; transition: all 0.3s ease; }
+        header.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
         .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .burger { width: 16px; height: 1.5px; background: #000; position: relative; }
         .burger::before { content: ''; position: absolute; top: -5px; width: 100%; height: 1.5px; background: #000; }
@@ -36,15 +139,24 @@
         .overlay-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: none; z-index: 1500; }
         .overlay-bg.active { display: block; }
 
-        /* 画廊布局 */
+        /* 主体内容 */
+        .page-container { 
+            position: relative;
+            z-index: 20; 
+            background-color: var(--bg); 
+            opacity: 1; 
+        }
+
         .a24-section { padding: 120px 40px 100px; max-width: 1800px; margin: 0 auto; border-bottom: 1px solid #eee; }
         .section-title { font-size: 42px; font-weight: 700; margin-bottom: 60px; letter-spacing: -1px; }
         .a24-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 30px; align-items: start; }
-        .grid-item { position: relative; }
-        .span-2 { grid-column: span 2; }
         
+        .a24-grid .grid-item { opacity: 0; transform: translateY(100px); }
+
+        .grid-item { position: relative; }
+        .span-2 { grid-column: span 2; } 
         .photo-card { position: relative; overflow: hidden; background: #f0f0f0; cursor: pointer; width: 100%; }
-        .photo-card img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 1.2s var(--transition-a24); }
+        .photo-card img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
         .photo-card:hover img { transform: scale(1.05); }
         .hover-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; color: #fff; opacity: 0; transition: opacity 0.4s ease; z-index: 10; }
         .photo-card:hover .hover-overlay { opacity: 1; }
@@ -56,7 +168,7 @@
         .info-block { padding: 30px; background: #000; color: #fff; height: 100%; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; transition: 0.4s; cursor: pointer; }
         .info-block:hover { background: #1a1a1a; }
 
-        /* 哈苏区域 */
+        /* 哈苏 & Footer */
         .hasselblad-container { padding: 80px 40px; max-width: 1400px; margin: 0 auto; }
         .project-section { margin-bottom: 180px; }
         .project-header { text-align: center; margin-bottom: 60px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
@@ -68,28 +180,20 @@
         .view-more-btn { border: 1px solid #fff; color: #fff; padding: 12px 28px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 50px; transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); text-decoration: none; }
         .view-more-card:hover .view-more-overlay { opacity: 1; }
         .view-more-card:hover .view-more-btn { transform: translateY(0); }
-
-        /* Footer & Social Icons */
         .footer-cta { text-align: center; padding: 0 0 150px; }
         .btn-large { display: inline-block; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #000; border: 1px solid #000; padding: 20px 60px; text-decoration: none; transition: 0.3s; }
         .btn-large:hover { background: #000; color: #fff; }
         .site-footer { background: #fcfcfc; border-top: 1px solid #eee; padding: 100px 40px 60px; text-align: center; }
         .poetic-quote { font-size: 28px; font-weight: 300; font-family: 'Times New Roman', serif; font-style: italic; color: #333; margin-bottom: 80px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.4; }
-        
-        .footer-meta { 
-            display: flex; justify-content: space-between; align-items: center; 
-            font-size: 11px; font-weight: 600; text-transform: uppercase; color: #999; 
-        }
-        
+        .footer-meta { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 600; text-transform: uppercase; color: #999; }
         .social-links { display: flex; align-items: center; gap: 20px; }
-        .social-links a { 
-            color: #000; text-decoration: none; transition: 0.3s; 
-            display: flex; align-items: center; justify-content: center;
-        }
+        .social-links a { color: #000; text-decoration: none; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
         .social-links a:hover { opacity: 0.6; transform: scale(1.1); }
         .social-links svg { width: 18px; height: 18px; fill: currentColor; }
 
         @media (max-width: 768px) {
+            .hero-main-title { font-size: 18vw; }
+            .slogan-line { font-size: 18px; }
             .a24-section, .hasselblad-container, .site-footer { padding: 60px 20px; }
             header { padding: 0 20px; height: 60px; }
             .section-title { font-size: 32px; margin-bottom: 40px; }
@@ -130,7 +234,7 @@
         </ul>
     </nav>
 
-    <header>
+    <header id="mainHeader">
         <div class="header-left" id="menuBtn">
             <div class="burger"></div>
             <div class="nav-label">MENU</div>
@@ -141,6 +245,27 @@
             <span id="lang-cn">中</span>
         </div>
     </header>
+
+    <section class="hero-intro-section" id="heroIntro">
+        <div class="hero-bg-wrap">
+            <div class="hero-bg-img"></div>
+        </div>
+        <div class="hero-content">
+            <h1 class="hero-main-title">FotoZaki</h1>
+            <div class="hero-slogan-container">
+                <span class="slogan-line" 
+                      data-en="Through the lens, we capture not just light and shadow, but the silent whispers of the world." 
+                      data-cn="透过镜头，我们不仅捕捉光影，更记录世界的低语。">
+                    Through the lens, we capture not just light and shadow, but the silent whispers of the world.
+                </span>
+                <span class="slogan-line" 
+                      data-en="It strips away the noise to reveal the inherent vitality, turning fleeting moments into eternal visual poetry." 
+                      data-cn="剥离喧嚣，揭示内在的生命力，将瞬间化为永恒的视觉诗篇。">
+                    It strips away the noise to reveal the inherent vitality, turning fleeting moments into eternal visual poetry.
+                </span>
+            </div>
+        </div>
+    </section>
 
     <div class="page-container">
         
@@ -321,6 +446,74 @@
     </div>
 
     <script>
+        // 注册插件
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 创建时间轴
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#heroIntro",
+                start: "top top",
+                end: "+=100%", // 缩短滚动距离，让Slogan只停留一下
+                scrub: 1,      
+                pin: true,     
+            }
+        });
+
+        // 动画序列
+        tl
+        // 1. 背景图变暗+微模糊，保留艺术质感
+        .to(".hero-bg-img", {
+            filter: "brightness(0.5) blur(3px)", // 亮度降到0.5 (不纯黑)，加点模糊
+            duration: 1
+        }, 0)
+        
+        // 2. 标题缩小并上移
+        .to(".hero-main-title", {
+            scale: 0.15, 
+            y: "-45vh", 
+            duration: 1,
+            ease: "power2.inOut"
+        }, 0)
+
+        // 3. Slogan 逐行浮现 (从左往右)
+        .to(".slogan-line", {
+            opacity: 1,
+            y: 0, 
+            stagger: 0.3,
+            duration: 1,
+            ease: "power2.out"
+        }, 0.3); 
+
+        // 4. 标题淡出
+        tl.to(".hero-main-title", {
+            opacity: 0,
+            duration: 0.1
+        }, 0.95); 
+
+        // 5. 画廊区域涌现效果
+        ScrollTrigger.batch(".a24-grid .grid-item", {
+            start: "top 90%",
+            onEnter: batch => gsap.to(batch, {
+                opacity: 1,
+                y: 0,
+                stagger: 0.15,
+                duration: 1,
+                ease: "power3.out"
+            }),
+            once: true 
+        });
+
+        // 导航栏显示逻辑
+        ScrollTrigger.create({
+            trigger: ".page-container",
+            start: "top top", 
+            end: "bottom bottom",
+            onEnter: () => document.getElementById("mainHeader").classList.add("active"),
+            onLeaveBack: () => document.getElementById("mainHeader").classList.remove("active"),
+        });
+
+        // 原有的菜单逻辑
         const menuBtn = document.getElementById('menuBtn');
         const closeBtn = document.getElementById('closeBtn');
         const sideDrawer = document.getElementById('sideDrawer');
