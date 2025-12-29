@@ -28,7 +28,7 @@
         .content-side {
             width: 33.333%;
             margin-left: 66.666%; 
-            padding: 140px 60px 100px; /* 顶部padding加大，避开导航栏 */
+            padding: 140px 60px 100px; 
             display: flex; 
             flex-direction: column; 
             justify-content: center;
@@ -43,52 +43,59 @@
         .gear-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 13px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
         .gear-label { color: #888; font-weight: 500; }
 
-        /* 按钮 */
-        .contact-btn { display: block; width: 100%; margin-top: 40px; padding: 20px 0; background: #000; color: #fff; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; text-align: center; transition: 0.3s; }
+        /* --- 按钮 (修改为触发弹窗) --- */
+        .contact-btn { 
+            display: block; 
+            width: 100%;    
+            margin-top: 40px; 
+            padding: 20px 0;
+            background: #000; 
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            text-align: center; 
+            transition: 0.3s;
+            cursor: pointer;
+            border: none; /* 移除可能的边框 */
+        }
         .contact-btn:hover { background: #333; }
 
         /* =========================================
-           HEADER & NAV STYLES (核心修改区域)
+           HEADER & NAV STYLES
            ========================================= */
-        
-        /* 统一的 Header 容器 */
         header {
             position: fixed; top: 0; left: 0; width: 100%; height: 80px;
             z-index: 100;
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 40px;
-            /* 电脑端默认：背景透明，文字反色，点击穿透 */
             background: transparent;
-            pointer-events: none; /* 让鼠标能点到下面的图 */
+            pointer-events: none; 
         }
 
-        /* Logo */
         .logo { 
             font-weight: 900; font-size: 20px; text-decoration: none; 
             color: #fff; mix-blend-mode: difference; 
             pointer-events: auto; 
         }
 
-        /* 右侧功能区容器 */
         .header-right {
             display: flex; align-items: center; gap: 30px;
-            pointer-events: auto; /* 恢复点击 */
+            pointer-events: auto; 
         }
 
-        /* 社交图标 */
         .socials { display: flex; gap: 20px; align-items: center; mix-blend-mode: difference; color: #fff; }
         .social-link { display: flex; align-items: center; justify-content: center; color: inherit; transition: 0.3s; opacity: 0.8; }
         .social-link:hover { opacity: 1; transform: scale(1.1); }
         .social-link svg { width: 18px; height: 18px; fill: currentColor; }
 
-        /* 语言切换 */
         .lang-switch { font-weight: 700; font-size: 11px; letter-spacing: 1px; cursor: pointer; color: #fff; mix-blend-mode: difference; opacity: 0.8; transition: 0.3s; }
         .lang-switch:hover { opacity: 1; }
 
-        /* 菜单按钮 */
         .menu-trigger { font-weight: 700; font-size: 11px; letter-spacing: 1px; cursor: pointer; color: #fff; mix-blend-mode: difference; }
 
-        /* 侧边菜单 (保持不变) */
+        /* 侧边菜单 */
         .side-drawer { position: fixed; top: 0; left: -100%; width: 100%; max-width: 450px; height: 100vh; background: #000; color: #fff; z-index: 200; padding: 40px; transition: left 0.6s var(--transition); display: flex; flex-direction: column; pointer-events: auto; }
         .side-drawer.active { left: 0; }
         .close-btn { cursor: pointer; margin-bottom: 40px; font-weight: 700; font-size: 11px; }
@@ -98,37 +105,95 @@
         .overlay.active { display: block; }
 
         /* =========================================
-           MOBILE ADAPTATION (手机端适配)
+           CONTACT MODAL (新增弹窗样式)
+           ========================================= */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1; pointer-events: auto;
+        }
+
+        .contact-modal {
+            background: #fff;
+            width: 90%; max-width: 450px;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        .modal-overlay.active .contact-modal {
+            transform: scale(1);
+        }
+
+        .modal-close-btn {
+            position: absolute; top: 20px; right: 20px;
+            font-size: 24px; cursor: pointer; color: #999;
+            transition: 0.3s;
+        }
+        .modal-close-btn:hover { color: #000; }
+
+        .modal-title {
+            font-size: 24px; font-weight: 900; margin-bottom: 40px;
+            text-transform: uppercase; letter-spacing: -1px;
+        }
+
+        .modal-section { margin-bottom: 30px; }
+        .modal-label {
+            font-size: 10px; font-weight: 700; color: #999; 
+            text-transform: uppercase; letter-spacing: 1px;
+            margin-bottom: 8px; display: block;
+        }
+        
+        .email-link {
+            font-size: 18px; font-weight: 600; color: #000;
+            text-decoration: none; border-bottom: 1px solid transparent;
+            transition: 0.3s;
+        }
+        .email-link:hover { border-bottom-color: #000; }
+
+        .modal-socials {
+            display: flex; justify-content: center; gap: 30px; margin-top: 20px;
+        }
+        .modal-social-icon {
+            width: 50px; height: 50px;
+            background: #f5f5f5; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #000; transition: 0.3s;
+        }
+        .modal-social-icon:hover {
+            background: #000; color: #fff; transform: translateY(-3px);
+        }
+        .modal-social-icon svg { width: 20px; height: 20px; fill: currentColor; }
+
+
+        /* =========================================
+           MOBILE ADAPTATION
            ========================================= */
         @media (max-width: 768px) {
             .about-container { flex-direction: column; }
             
-            /* 1. Header 变成白色背景，固定在顶部 */
             header {
-                height: 60px;
-                padding: 0 20px;
-                background: rgba(255,255,255,0.95); /* 白色半透明背景 */
-                backdrop-filter: blur(10px);        /* 磨砂效果 */
+                height: 60px; padding: 0 20px;
+                background: rgba(255,255,255,0.95);
+                backdrop-filter: blur(10px);
                 border-bottom: 0.5px solid #eee;
-                pointer-events: auto; /* 恢复整条响应 */
+                pointer-events: auto;
             }
-
-            /* 2. 移除所有反色模式，强制变成黑色文字 */
-            .logo, .socials, .lang-switch, .menu-trigger {
-                mix-blend-mode: normal;
-                color: #000;
-            }
-
-            /* 调整间距以适应小屏幕 */
+            .logo, .socials, .lang-switch, .menu-trigger { mix-blend-mode: normal; color: #000; }
             .header-right { gap: 15px; }
             .socials { gap: 15px; }
             .social-link svg { width: 16px; height: 16px; }
 
-            /* 布局调整 */
-            .profile-side { 
-                position: relative; width: 100%; height: 50vh; 
-                margin-top: 60px; /* 给 Header 留出位置，防止被遮挡 */
-            }
+            .profile-side { position: relative; width: 100%; height: 50vh; margin-top: 60px; }
             .content-side { width: 100%; margin-left: 0; padding: 60px 30px; }
             .huge-title { font-size: 48px; }
             .side-drawer { width: 100%; }
@@ -207,7 +272,31 @@
                 </div>
             </div>
 
-            <a href="mailto:maozunjie@gmail.com" class="contact-btn" data-en="GET IN TOUCH" data-cn="联系我">GET IN TOUCH</a>
+            <button id="showContact" class="contact-btn" data-en="GET IN TOUCH" data-cn="联系我">GET IN TOUCH</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="contactModal">
+        <div class="contact-modal">
+            <div class="modal-close-btn" id="closeContact">×</div>
+            <div class="modal-title" data-en="Let's Connect" data-cn="建立联系">Let's Connect</div>
+            
+            <div class="modal-section">
+                <span class="modal-label">Email</span>
+                <a href="mailto:maozunjie@gmail.com" class="email-link">maozunjie@gmail.com</a>
+            </div>
+
+            <div class="modal-section">
+                <span class="modal-label" data-en="Social Media" data-cn="社交媒体">Social Media</span>
+                <div class="modal-socials">
+                    <a href="https://www.instagram.com/zakimaoo/" target="_blank" class="modal-social-icon" title="Instagram">
+                        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <a href="https://www.douyin.com/user/MS4wLjABAAAAco5xNCr6FDGKRvTpyOJ2JeHVAbHBGfHjU4G4hjsmBBcYxDV0T2_VfSN9G6SP_48R?from_tab_name=main" target="_blank" class="modal-social-icon" title="Douyin">
+                        <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -227,9 +316,31 @@
         langBtn.onclick = () => {
             currentLang = currentLang === 'en' ? 'cn' : 'en';
             translatableElements.forEach(el => {
-                el.innerHTML = el.getAttribute(`data-${currentLang}`);
+                // 处理普通文本
+                if(el.getAttribute(`data-${currentLang}`)) {
+                    el.innerHTML = el.getAttribute(`data-${currentLang}`);
+                }
             });
             langBtn.textContent = currentLang === 'en' ? 'EN / 中' : '中 / EN';
+        };
+
+        // --- 弹窗逻辑 ---
+        const showContactBtn = document.getElementById('showContact');
+        const contactModal = document.getElementById('contactModal');
+        const closeContactBtn = document.getElementById('closeContact');
+
+        const toggleModal = () => {
+            contactModal.classList.toggle('active');
+        };
+
+        showContactBtn.onclick = toggleModal;
+        closeContactBtn.onclick = toggleModal;
+        
+        // 点击遮罩层关闭弹窗
+        contactModal.onclick = (e) => {
+            if (e.target === contactModal) {
+                toggleModal();
+            }
         };
     </script>
 </body>
