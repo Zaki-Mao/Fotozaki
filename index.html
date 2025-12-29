@@ -6,49 +6,16 @@
     <title>VISUAL ARCHIVE | HOME</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #ffffff;
-            --text: #000000;
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            --transition-a24: cubic-bezier(0.4, 0, 0.2, 1);
-            --hasselblad-accent: #bd5d38;
-        }
-
+        /* 保持原有的 CSS 样式不变 */
+        :root { --bg: #ffffff; --text: #000000; --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; --transition-a24: cubic-bezier(0.4, 0, 0.2, 1); --hasselblad-accent: #bd5d38; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: var(--font-main);
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            width: 100%;
-        }
-
-        /* 进场动画 */
+        body { background-color: var(--bg); color: var(--text); font-family: var(--font-main); -webkit-font-smoothing: antialiased; overflow-x: hidden; width: 100%; }
         .page-container { animation: a24Entrance 1.8s var(--transition-a24) forwards; opacity: 0; }
-        @keyframes a24Entrance {
-            0% { transform: scale(1.08); opacity: 0; filter: blur(10px); }
-            100% { transform: scale(1); opacity: 1; filter: blur(0); }
-        }
-
-        /* 导航栏 (Fix: 确保它相对于视口定位) */
-        header {
-            position: fixed; 
-            top: 0; 
-            width: 100%; 
-            height: 70px;
-            padding: 0 40px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between;
-            background: rgba(255,255,255,0.95); 
-            backdrop-filter: blur(10px);
-            z-index: 1000; 
-            border-bottom: 0.5px solid #f0f0f0;
-            transition: all 0.3s ease;
-        }
+        @keyframes a24Entrance { 0% { transform: scale(1.08); opacity: 0; filter: blur(10px); } 100% { transform: scale(1); opacity: 1; filter: blur(0); } }
+        
+        /* 导航栏 */
+        header { position: fixed; top: 0; width: 100%; height: 70px; padding: 0 40px; display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); z-index: 1000; border-bottom: 0.5px solid #f0f0f0; transition: all 0.3s ease; }
         .header-left { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .burger { width: 16px; height: 1.5px; background: #000; position: relative; }
         .burger::before { content: ''; position: absolute; top: -5px; width: 100%; height: 1.5px; background: #000; }
@@ -59,57 +26,34 @@
         .lang-switch span.active { opacity: 1; border-bottom: 1.5px solid #000; }
 
         /* 侧边菜单 */
-        .side-drawer {
-            position: fixed; top: 0; left: -100%; width: 100%; max-width: 450px; height: 100vh;
-            background: #000; color: #fff; z-index: 2000; padding: 40px;
-            transition: left 0.6s var(--transition-a24); display: flex; flex-direction: column;
-        }
+        .side-drawer { position: fixed; top: 0; left: -100%; width: 100%; max-width: 450px; height: 100vh; background: #000; color: #fff; z-index: 2000; padding: 40px; transition: left 0.6s var(--transition-a24); display: flex; flex-direction: column; }
         .side-drawer.active { left: 0; }
         .close-btn { font-size: 11px; font-weight: 700; cursor: pointer; margin-bottom: 60px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
-        
         .menu-items { list-style: none; }
         .menu-items li { font-size: 52px; font-weight: 700; line-height: 1.1; margin-bottom: 15px; cursor: pointer; letter-spacing: -1.5px; transition: 0.3s; }
         .menu-items li a { color: #fff; text-decoration: none; display: block; width: 100%; }
         .menu-items li:hover { opacity: 0.5; padding-left: 10px; }
-        
         .overlay-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); display: none; z-index: 1500; }
         .overlay-bg.active { display: block; }
 
-        /* A24 画廊 Grid */
+        /* 画廊布局 */
         .a24-section { padding: 120px 40px 100px; max-width: 1800px; margin: 0 auto; border-bottom: 1px solid #eee; }
         .section-title { font-size: 42px; font-weight: 700; margin-bottom: 60px; letter-spacing: -1px; }
-        
-        .a24-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 40px 30px; 
-            align-items: start;
-        }
-
+        .a24-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 30px; align-items: start; }
         .grid-item { position: relative; }
-        .span-2 { grid-column: span 2; } 
-
+        .span-2 { grid-column: span 2; }
+        
         .photo-card { position: relative; overflow: hidden; background: #f0f0f0; cursor: pointer; width: 100%; }
         .photo-card img { width: 100%; height: 100%; display: block; object-fit: cover; transition: transform 1.2s var(--transition-a24); }
         .photo-card:hover img { transform: scale(1.05); }
-
-        .hover-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); display: flex; flex-direction: column; justify-content: flex-end;
-            padding: 30px; color: #fff; opacity: 0; transition: opacity 0.4s ease; z-index: 10;
-        }
+        .hover-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; color: #fff; opacity: 0; transition: opacity 0.4s ease; z-index: 10; }
         .photo-card:hover .hover-overlay { opacity: 1; }
         .overlay-label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #999; margin-bottom: 5px; letter-spacing: 1px; }
         .overlay-text { font-size: 15px; font-weight: 600; line-height: 1.4; margin-bottom: 25px; }
-
         .photo-info { margin-top: 15px; }
         .info-label { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #888; margin-bottom: 4px; letter-spacing: 0.5px; }
         .item-name { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; line-height: 1.2; }
-        
-        .info-block { 
-            padding: 30px; background: #000; color: #fff; height: 100%; min-height: 300px;
-            display: flex; flex-direction: column; justify-content: flex-end; transition: 0.4s; cursor: pointer; 
-        }
+        .info-block { padding: 30px; background: #000; color: #fff; height: 100%; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; transition: 0.4s; cursor: pointer; }
         .info-block:hover { background: #1a1a1a; }
 
         /* 哈苏区域 */
@@ -120,7 +64,6 @@
         .ph-title { font-size: 24px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #000; }
         .ph-meta { font-size: 10px; color: #888; letter-spacing: 0.5px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
         .project-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        
         .view-more-card .view-more-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease; z-index: 10; }
         .view-more-btn { border: 1px solid #fff; color: #fff; padding: 12px 28px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-radius: 50px; transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); text-decoration: none; }
         .view-more-card:hover .view-more-overlay { opacity: 1; }
@@ -135,27 +78,22 @@
         .footer-meta { display: flex; justify-content: space-between; align-items: flex-end; font-size: 11px; font-weight: 600; text-transform: uppercase; color: #999; }
         .social-links a { color: #000; text-decoration: none; margin-left: 20px; transition: 0.3s; }
 
-        /* Mobile Adaptation */
         @media (max-width: 768px) {
             .a24-section, .hasselblad-container, .site-footer { padding: 60px 20px; }
             header { padding: 0 20px; height: 60px; }
             .section-title { font-size: 32px; margin-bottom: 40px; }
-            
             .a24-grid { grid-template-columns: 1fr; gap: 50px; }
-            .span-2 { grid-column: span 1; } 
-            
+            .span-2 { grid-column: span 1; }
             .hover-overlay { display: none !important; }
             .photo-info { margin-top: 12px; display: flex; justify-content: space-between; align-items: baseline; }
             .item-name { font-size: 20px; }
             .info-block { min-height: 250px; }
-            
             .project-section { margin-bottom: 100px; }
             .project-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding-bottom: 20px; scrollbar-width: none; margin-right: -20px; padding-right: 20px; }
             .project-grid::-webkit-scrollbar { display: none; }
             .project-grid .photo-card { min-width: 85vw; scroll-snap-align: center; }
             .view-more-card .view-more-overlay { opacity: 1; background: rgba(0,0,0,0.2); }
             .view-more-btn { transform: translateY(0); background: #fff; color: #000; padding: 10px 20px; font-size: 10px; }
-            
             .side-drawer { width: 100%; max-width: 100%; }
             .menu-items li { font-size: 40px; }
             .poetic-quote { font-size: 20px; padding: 0 10px; }
@@ -194,14 +132,14 @@
     </header>
 
     <div class="page-container">
+        
         <section class="a24-section">
             <h2 class="section-title" id="sectionTitle">Gallery</h2>
-            
             <div class="a24-grid">
                 
                 <div class="grid-item">
                     <div class="photo-card" style="aspect-ratio: 4/5;">
-                        <img src="images\architecture\AR01.jfif" alt="Street">
+                        <img src="images\architecture\AR01.jfif" alt="Street" fetchpriority="high">
                         <div class="hover-overlay">
                             <div class="overlay-label">Date</div><div class="overlay-text">FEB 9, 2025</div>
                             <div class="overlay-label">Story</div><div class="overlay-text">Xujiahui Catholic Church, standing in serene grace, its spires whispering prayers into the Shanghai sky.</div>
@@ -212,7 +150,7 @@
 
                 <div class="grid-item">
                     <div class="photo-card" style="aspect-ratio: 4/5;">
-                        <img src="images\BW\BW02.jfif" alt="Arch">
+                        <img src="images\BW\BW02.jfif" alt="Arch" fetchpriority="high">
                         <div class="hover-overlay">
                             <div class="overlay-label">Location</div><div class="overlay-text">Shanghai</div>
                         </div>
@@ -229,17 +167,18 @@
                 </div>
 
                 <div class="grid-item span-2">
-                    <div class="photo-card" style="aspect-ratio: 21/9;"> <img src="images\BW\BW01.jfif" alt="B&W">
+                    <div class="photo-card" style="aspect-ratio: 21/9;"> 
+                        <img src="images\BW\BW01.jfif" alt="B&W" loading="lazy" decoding="async">
                         <div class="hover-overlay">
-                            <div class="overlay-label">Black & White</div><div class="overlay-text">When stripped down to black and white, we find ourselves with stories anew, to unburden to the sea.
-— Taken at Xiaomai Island Park, Qingdao</div>
+                            <div class="overlay-label">Black & White</div><div class="overlay-text">When stripped down to black and white, we find ourselves with stories anew, to unburden to the sea.</div>
                         </div>
                     </div>
                     <div class="photo-info"><div class="info-label">Black & White</div><div class="item-name">Monochrome Coast</div></div>
                 </div>
 
                  <div class="grid-item">
-                    <div class="photo-card" style="aspect-ratio: 1/1;"> <img src="images\portrait\PO01.jfif" alt="Portrait">
+                    <div class="photo-card" style="aspect-ratio: 1/1;"> 
+                        <img src="images\portrait\PO01.jfif" alt="Portrait" loading="lazy" decoding="async">
                          <div class="hover-overlay">
                             <div class="overlay-label">Subject</div><div class="overlay-text">Stranger in Tokyo</div>
                         </div>
@@ -258,10 +197,10 @@
                     <div class="ph-meta">2024 COLLECTION</div>
                 </div>
                 <div class="project-grid">
-                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="images\architecture\AR02.jfif"></div>
-                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="images\architecture\AR03.jfif"></div>
+                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="images\architecture\AR02.jfif" loading="lazy" decoding="async"></div>
+                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="images\architecture\AR03.jfif" loading="lazy" decoding="async"></div>
                     <div class="photo-card view-more-card" style="aspect-ratio: 1/1;">
-                        <img src="images\architecture\AR04.jfif">
+                        <img src="images\architecture\AR04.jfif" loading="lazy" decoding="async">
                         <div class="view-more-overlay"><a href="#" class="view-more-btn" data-en="View Project" data-cn="查看更多">View Project</a></div>
                     </div>
                 </div>
@@ -274,10 +213,10 @@
                     <div class="ph-meta">2023 MASTERPIECE</div>
                 </div>
                 <div class="project-grid">
-                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=800&fit=crop"></div>
-                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1520699049698-acd2fcc51056?q=80&w=800&fit=crop"></div>
+                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=800&fit=crop" loading="lazy" decoding="async"></div>
+                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1520699049698-acd2fcc51056?q=80&w=800&fit=crop" loading="lazy" decoding="async"></div>
                     <div class="photo-card view-more-card" style="aspect-ratio: 1/1;">
-                        <img src="https://images.unsplash.com/photo-1504829857797-ddff29c27927?q=80&w=800&fit=crop">
+                        <img src="https://images.unsplash.com/photo-1504829857797-ddff29c27927?q=80&w=800&fit=crop" loading="lazy" decoding="async">
                         <div class="view-more-overlay"><a href="#" class="view-more-btn" data-en="View Project" data-cn="查看更多">View Project</a></div>
                     </div>
                 </div>
@@ -290,10 +229,10 @@
                     <div class="ph-meta">NIGHT EDITION</div>
                 </div>
                 <div class="project-grid">
-                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=800&fit=crop"></div>
-                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800&fit=crop"></div>
+                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=800&fit=crop" loading="lazy" decoding="async"></div>
+                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800&fit=crop" loading="lazy" decoding="async"></div>
                     <div class="photo-card view-more-card" style="aspect-ratio: 1/1;">
-                        <img src="https://images.unsplash.com/photo-1534234828563-02511456b3e8?q=80&w=800&fit=crop">
+                        <img src="https://images.unsplash.com/photo-1534234828563-02511456b3e8?q=80&w=800&fit=crop" loading="lazy" decoding="async">
                         <div class="view-more-overlay"><a href="#" class="view-more-btn" data-en="View Project" data-cn="查看更多">View Project</a></div>
                     </div>
                 </div>
@@ -306,10 +245,10 @@
                     <div class="ph-meta">STUDIO SESSIONS</div>
                 </div>
                 <div class="project-grid">
-                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=800&fit=crop&saturation=-100"></div>
-                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&fit=crop&saturation=-100"></div>
+                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?q=80&w=800&fit=crop&saturation=-100" loading="lazy" decoding="async"></div>
+                    <div class="photo-card" style="aspect-ratio: 1/1;"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&fit=crop&saturation=-100" loading="lazy" decoding="async"></div>
                     <div class="photo-card view-more-card" style="aspect-ratio: 1/1;">
-                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&fit=crop&saturation=-100">
+                        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&fit=crop&saturation=-100" loading="lazy" decoding="async">
                         <div class="view-more-overlay"><a href="#" class="view-more-btn" data-en="View Project" data-cn="查看更多">View Project</a></div>
                     </div>
                 </div>
