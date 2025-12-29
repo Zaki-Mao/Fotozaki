@@ -8,42 +8,87 @@
     <style>
         :root { --bg: #ffffff; --text: #000000; --transition: cubic-bezier(0.4, 0, 0.2, 1); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        
+        body { font-family: 'OPPO Sans', 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
-        /* 布局结构 */
         .about-container { display: flex; min-height: 100vh; }
         
-        /* 左侧固定海报区 */
+        /* --- 左侧海报 (2/3 宽度) --- */
         .profile-side {
-            width: 50%; height: 100vh;
+            width: 66.666%;
+            height: 100vh;
             position: fixed; top: 0; left: 0;
             background: #f0f0f0; overflow: hidden; z-index: 1;
         }
         .profile-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: 1.5s; }
         .profile-side:hover .profile-img { filter: grayscale(0%); transform: scale(1.03); }
 
-        /* 右侧内容区 */
+        /* --- 右侧内容区 (1/3 宽度) --- */
         .content-side {
-            width: 50%; margin-left: 50%; /* 让出左侧 */
-            padding: 120px 80px; display: flex; flex-direction: column; justify-content: center;
+            width: 33.333%;
+            margin-left: 66.666%; /* 让出左侧 */
+            padding: 100px 60px; /* 增加一点左右边距 */
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center;
+            /* 保持左对齐，不使用 align-items: center */
         }
 
-        .huge-title { font-size: 80px; font-weight: 900; line-height: 0.9; margin-bottom: 60px; letter-spacing: -3px; }
-        .bio-text { font-size: 18px; line-height: 1.6; margin-bottom: 30px; max-width: 500px; color: #333; }
+        /* 标题 */
+        .huge-title { 
+            font-size: 60px; 
+            font-weight: 900; 
+            line-height: 1.3; 
+            margin-bottom: 40px; 
+            letter-spacing: -2px; 
+        }
         
-        .gear-section { margin-top: 80px; border-top: 1px solid #000; padding-top: 20px; }
-        .gear-header { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
-        .gear-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .gear-label { color: #888; }
+        .bio-text { font-size: 15px; line-height: 1.8; margin-bottom: 25px; color: #333; }
+        
+        /* --- 器材栏修改 --- */
+        .gear-section { 
+            margin-top: 60px; 
+            border-top: 1px solid #000; /* 细线 */
+            padding-top: 25px; 
+            width: 100%; /* 拉长：占满父容器宽度 */
+        }
+        
+        .gear-header { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        
+        .gear-row { 
+            display: flex; 
+            justify-content: space-between; /* 核心：贴到两边 */
+            margin-bottom: 12px; 
+            font-size: 13px; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 8px; 
+        }
+        .gear-label { color: #888; font-weight: 500; }
 
-        .contact-btn { display: inline-block; margin-top: 60px; padding: 20px 50px; background: #000; color: #fff; text-decoration: none; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        /* --- 按钮修改 --- */
+        .contact-btn { 
+            display: block; /* 块级元素 */
+            width: 100%;    /* 宽度铺满，和上面细线对齐 */
+            margin-top: 40px; 
+            padding: 20px 0;
+            background: #000; 
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            text-align: center; /* 核心：文字居中 */
+            transition: 0.3s;
+        }
         .contact-btn:hover { background: #333; }
 
-        /* 悬浮菜单按钮 */
+        /* 悬浮菜单 */
         .fixed-menu { position: fixed; top: 30px; right: 40px; z-index: 100; cursor: pointer; font-weight: 700; font-size: 11px; letter-spacing: 1px; mix-blend-mode: difference; color: #fff; }
+        .fixed-lang { position: fixed; top: 30px; right: 100px; z-index: 100; cursor: pointer; font-weight: 700; font-size: 11px; letter-spacing: 1px; mix-blend-mode: difference; color: #fff; opacity: 0.7; transition: 0.3s; }
+        .fixed-lang:hover { opacity: 1; }
         .fixed-logo { position: fixed; top: 30px; left: 40px; z-index: 100; font-weight: 900; font-size: 20px; text-decoration: none; mix-blend-mode: difference; color: #fff; }
 
-        /* 侧边菜单 (复用) */
+        /* 侧边菜单 */
         .side-drawer { position: fixed; top: 0; left: -100%; width: 100%; max-width: 450px; height: 100vh; background: #000; color: #fff; z-index: 200; padding: 40px; transition: left 0.6s var(--transition); display: flex; flex-direction: column; }
         .side-drawer.active { left: 0; }
         .close-btn { cursor: pointer; margin-bottom: 40px; font-weight: 700; font-size: 11px; }
@@ -52,12 +97,14 @@
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 150; }
         .overlay.active { display: block; }
 
+        /* 移动端适配 */
         @media (max-width: 768px) {
             .about-container { flex-direction: column; }
-            .profile-side { position: relative; width: 100%; height: 60vh; }
+            .profile-side { position: relative; width: 100%; height: 50vh; }
             .content-side { width: 100%; margin-left: 0; padding: 60px 30px; }
-            .huge-title { font-size: 50px; }
+            .huge-title { font-size: 48px; }
             .side-drawer { width: 100%; }
+            .fixed-lang { right: 80px; }
         }
     </style>
 </head>
@@ -77,6 +124,7 @@
     </nav>
 
     <a href="index.html" class="fixed-logo">FotoZaki</a>
+    <div class="fixed-lang" id="langSwitch">EN / 中</div>
     <div class="fixed-menu" id="menuBtn">MENU</div>
 
     <div class="about-container">
@@ -85,22 +133,40 @@
         </div>
 
         <div class="content-side">
-            <h1 class="huge-title">Hello,<br>I'm Zaki.</h1>
-            <p class="bio-text">
+            <h1 class="huge-title" data-en="Hello,<br>I'm Zaki." data-cn="Hello,<br>我是 Zaki。">Hello,<br>I'm Zaki.</h1>
+            
+            <p class="bio-text" 
+               data-en="I am a photographer based in Shanghai. I wander through the city, capturing fleeting moments of silence amidst the urban chaos and the profound geometry of its architecture."
+               data-cn="我是一名常驻上海的时尚摄影师。我喜欢游走于城市缝隙，捕捉喧嚣都市中转瞬即逝的寂静，以及建筑深邃的几何诗意。">
                 I am a photographer based in Shanghai. I wander through the city, capturing fleeting moments of silence amidst the urban chaos and the profound geometry of its architecture.
             </p>
-            <p class="bio-text">
+            
+            <p class="bio-text"
+               data-en="Photography harnesses light and shadow; it sheds away the redundant to reveal the inherent vitality of its subject. A Moment, Eternal."
+               data-cn="我眼中的摄影是驭光绘影；剥开冗余，揭示主体内在的生命力。就像links所说的，一瞬即永恒。">
                 Photography harnesses light and shadow; it sheds away the redundant to reveal the inherent vitality of its subject. A Moment, Eternal.
             </p>
 
             <div class="gear-section">
-                <div class="gear-header">Essential Gear</div>
-                <div class="gear-row"><span class="gear-label">Camera</span> <span>Nikon Zf</span></div>
-                <div class="gear-row"><span class="gear-label">Lens</span> <span>Nekkor 50mm f/1.8s</span></div>
-                <div class="gear-row"><span class="gear-label">Drone</span> <span>DJI Mavic 3</span></div>
+                <div class="gear-header" data-en="Essential Gear" data-cn="常用器材">Essential Gear</div>
+                
+                <div class="gear-row">
+                    <span class="gear-label" data-en="Camera" data-cn="相机">Camera</span> 
+                    <span>Nikon Zf</span>
+                </div>
+                
+                <div class="gear-row">
+                    <span class="gear-label" data-en="Lens" data-cn="镜头">Lens</span> 
+                    <span>Nikkor 50mm f/1.8s</span>
+                </div>
+                
+                <div class="gear-row">
+                    <span class="gear-label" data-en="Drone" data-cn="无人机">Drone</span> 
+                    <span>DJI Mavic 3</span>
+                </div>
             </div>
 
-            <a href="mailto:maozunjie@gmail.com" class="contact-btn">Get In Touch</a>
+            <a href="mailto:maozunjie@gmail.com" class="contact-btn" data-en="GET IN TOUCH" data-cn="联系我">GET IN TOUCH</a>
         </div>
     </div>
 
@@ -111,6 +177,19 @@
         const overlay = document.getElementById('overlay');
         const toggle = () => { sideDrawer.classList.toggle('active'); overlay.classList.toggle('active'); };
         menuBtn.onclick = toggle; closeBtn.onclick = toggle; overlay.onclick = toggle;
+
+        const langBtn = document.getElementById('langSwitch');
+        const translatableElements = document.querySelectorAll('[data-en]');
+        
+        let currentLang = 'en'; 
+
+        langBtn.onclick = () => {
+            currentLang = currentLang === 'en' ? 'cn' : 'en';
+            translatableElements.forEach(el => {
+                el.innerHTML = el.getAttribute(`data-${currentLang}`);
+            });
+            langBtn.textContent = currentLang === 'en' ? 'EN / 中' : '中 / EN';
+        };
     </script>
 </body>
 </html>
