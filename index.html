@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VISUAL ARCHIVE | HOME</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400;1,600;1,900&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -42,12 +42,15 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* 全新艺术素材：具有丰富灰阶和构成感的黑白抽象摄影 */
+            /* 保持您的本地素材路径 */
             background-image: url('images/portrait/Hero.jpg'); 
             background-position: center;
             background-size: cover;
-            /* 移除初始滤镜，确保图片一开始清晰可见，不显死黑 */
-            /* filter: brightness(0.8); */ 
+            
+            /* 初始状态：0.8亮度，无模糊 */
+            filter: brightness(0.8) blur(0px); 
+            opacity: 1;
+            transform: translateZ(0); 
             will-change: filter;
         }
 
@@ -59,9 +62,9 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transform: translateY(-5vh);
-            /* 增加文字阴影，确保在较亮的背景区域也能看清 */
-            text-shadow: 0 2px 15px rgba(0,0,0,0.5);
+            /* 【核心修改1】移除了 translateY(-5vh)，让大标题回归真正的垂直正居中，不再偏高 */
+            transform: translateY(0);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
         }
 
         .hero-main-title {
@@ -82,14 +85,16 @@
             align-items: center;
             gap: 12px;
             max-width: 900px;
+            will-change: transform; /* 优化动效性能 */
         }
 
         .slogan-line {
             display: block;
-            font-family: 'Playfair Display', serif;
+            /* 【核心修改2】字体改为 Sigvar Serial Xbold Italic SoftMaker */
+            font-family: 'Sigvar Serial Xbold Italic SoftMaker', 'Sigvar Serial', 'Playfair Display', serif;
             font-style: italic;
-            font-size: 24px;
-            font-weight: 400;
+            font-weight: 800; /* 根据字体特性调整粗细 */
+            font-size: 26px;
             letter-spacing: 0.5px;
             line-height: 1.6;
             opacity: 0;
@@ -476,14 +481,23 @@
             ease: "power2.inOut"
         }, 0)
 
-        // 3. Slogan 逐行浮现 (从左往右)
+        // 3. 【核心修改3】Slogan 向上浮动至屏幕中央
+        // 同时控制容器的移动，让Slogan从下方浮现到屏幕视觉中心
+        .to(".hero-slogan-container", {
+            opacity: 1,
+            y: "-15vh", /* 向上移动，占据原来标题的位置附近，实现视觉居中 */
+            duration: 1,
+            ease: "power2.out"
+        }, 0.2) // 稍微晚一点开始，错落感
+        
+        // Slogan 内部的逐行显现 (配合上面的容器上浮)
         .to(".slogan-line", {
             opacity: 1,
             y: 0, 
             stagger: 0.3,
             duration: 1,
             ease: "power2.out"
-        }, 0.3); 
+        }, 0.2); 
 
         // 4. 标题淡出
         tl.to(".hero-main-title", {
