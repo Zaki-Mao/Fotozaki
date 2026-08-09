@@ -148,48 +148,17 @@
     </div>
 
     <div class="gallery-container">
-        <div class="a24-grid" id="galleryGrid"></div>
+        <div class="a24-grid" id="galleryGrid" data-collection="landscape"></div>
     </div>
 
     <footer class="site-footer">
         <div class="footer-meta">© 2025 Visual Archive. Landscape Collection.</div>
     </footer>
 
+    <script src="assets/js/photos.js"></script>
+    <script src="assets/js/gallery.js"></script>
     <script>
-        // ==========================================
-        // 配置区域：Landscape 页面配置
-        // ==========================================
-        const TOTAL_IMAGES = 25;          // 照片总数：17张
-        const FOLDER_PATH = 'images/landscape/'; // 文件夹路径
-        const FILE_PREFIX = 'L';          // 文件名前缀：L01.jpg ... L17.jpg
-        const FILE_EXT = '.jpg';          // 文件后缀
-
-        // 生成画廊内容
-        const grid = document.getElementById('galleryGrid');
-        let htmlContent = '';
-
-        for (let i = 1; i <= TOTAL_IMAGES; i++) {
-            // 补零：1 -> 01
-            const num = i.toString().padStart(2, '0'); 
-            const fileName = `${FILE_PREFIX}${num}${FILE_EXT}`; 
-            
-            htmlContent += `
-                <div class="grid-item">
-                    <div class="photo-card">
-                        <img src="${FOLDER_PATH}${fileName}" loading="lazy" alt="Landscape Photography ${num}">
-                        <div class="hover-overlay">
-                            <div class="overlay-text">LANDSCAPE / NO.${num}</div>
-                        </div>
-                    </div>
-                    <div class="photo-info">
-                        <div class="item-name">View ${num}</div>
-                        <div class="item-meta">NATURE</div>
-                    </div>
-                </div>
-            `;
-        }
-
-        grid.innerHTML = htmlContent;
+        renderFotozakiGallery('landscape');
 
         // 动画与交互
         gsap.registerPlugin(ScrollTrigger);
