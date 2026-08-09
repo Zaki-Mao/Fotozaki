@@ -1,0 +1,48 @@
+name: Sync photo manifest
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "images/**"
+      - "uploads/**"
+      - "scripts/import-photos.mjs"
+      - "scripts/sync-photos.mjs"
+      - ".github/workflows/sync-photos.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Import uploaded photos
+        run: node scripts/import-photos.mjs
+
+      - name: Generate photo manifest
+        run: node scripts/sync-photos.mjs
+
+      - name: Commit imported photos and manifest
+        run: |
+          if git diff --quiet -- images uploads assets/js/photos.js; then
+            echo "Photos and manifest are already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add images uploads assets/js/photos.js
+          git commit -m "Import uploaded photos"
+          git push
