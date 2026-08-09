@@ -31,6 +31,26 @@
 * `landscape.html` - Nature and scenery collection.
 * `portrait.html` - Portraiture and human stories.
 * `about.html` - Photographer profile and contact info.
+* `assets/js/photos.js` - Auto-generated photo manifest used by gallery pages.
+* `scripts/sync-photos.mjs` - Scans image folders and regenerates the manifest.
+
+## Photo Upload Workflow
+
+The easiest way to add photos is to upload them to the matching `uploads/` folder. The file names can be anything; GitHub Actions will rename and move them into `images/`.
+
+* Street: upload to `uploads/street/`, then photos become `images/street/S66.jpg`, `S67.jpg`, ...
+* Black & White: upload to `uploads/bw/`, then photos become `images/BW/B16.jpg`, `B17.jpg`, ...
+* Landscape: upload to `uploads/landscape/`, then photos become `images/landscape/L26.jpg`, `L27.jpg`, ...
+* Portrait: upload to `uploads/portrait/`, then photos become `images/portrait/P13.jpg`, `P14.jpg`, ...
+
+After upload files are pushed to `main`, GitHub Actions runs `scripts/import-photos.mjs`, moves them into the right `images/` folder with the next number, then runs `scripts/sync-photos.mjs` and commits the updated `assets/js/photos.js`. The category pages read that manifest automatically, so you no longer need to edit `TOTAL_IMAGES` in each HTML file.
+
+For a local update, run:
+
+```bash
+node scripts/import-photos.mjs
+node scripts/sync-photos.mjs
+```
 
 ## 📸 Author
 
